@@ -39,7 +39,7 @@ Farmley is a modern e-commerce platform specializing in premium dry fruits, offe
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/farmley.git
+git clone https://github.com/Aftab-Fury/Farmley.git
 cd farmley
 ```
 
