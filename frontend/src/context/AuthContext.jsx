@@ -38,6 +38,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axios.post('/api/auth/login', { email, password })
       const { token, user } = response.data
+      console.log('Login response - User:', user)
+      console.log('Login response - Is Superuser:', user.isSuperuser)
       localStorage.setItem('token', token)
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
       setUser(user)
@@ -45,6 +47,7 @@ export const AuthProvider = ({ children }) => {
       toast.success('Login successful!')
       return true
     } catch (error) {
+      console.error('Login error:', error)
       toast.error(error.response?.data?.message || 'Login failed')
       return false
     }

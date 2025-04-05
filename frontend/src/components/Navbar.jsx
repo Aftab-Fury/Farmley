@@ -67,6 +67,10 @@ const Navbar = () => {
   const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = useState(null)
 
+  // Add debug logging
+  console.log('Navbar - User:', user)
+  console.log('Navbar - Is Superuser:', user?.isSuperuser)
+
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget)
   }
@@ -174,7 +178,7 @@ const Navbar = () => {
                   color="inherit"
                 >
                   <Avatar sx={{ width: 32, height: 32 }}>
-                    {user?.name?.[0]?.toUpperCase() || 'U'}
+                    {user?.username?.[0]?.toUpperCase() || 'U'}
                   </Avatar>
                 </IconButton>
                 <Menu
@@ -217,14 +221,12 @@ const Navbar = () => {
                       component={RouterLink}
                       to="/admin"
                       onClick={handleClose}
+                      sx={{ color: 'primary.main', fontWeight: 'bold' }}
                     >
                       Admin Panel
                     </MenuItem>
                   )}
-                  <MenuItem
-                    key="logout"
-                    onClick={handleLogout}
-                  >
+                  <MenuItem onClick={handleLogout}>
                     Logout
                   </MenuItem>
                 </Menu>
@@ -306,9 +308,20 @@ const Navbar = () => {
                   >
                     Profile
                   </MenuItem>,
+                  user?.isSuperuser && (
+                    <MenuItem
+                      key="admin"
+                      component={RouterLink}
+                      to="/admin"
+                      onClick={handleClose}
+                      sx={{ color: 'primary.main', fontWeight: 'bold' }}
+                    >
+                      Admin Panel
+                    </MenuItem>
+                  ),
                   <MenuItem key="logout" onClick={handleLogout}>
                     Logout
-                  </MenuItem>,
+                  </MenuItem>
                 ]
               ) : (
                 [
@@ -327,7 +340,7 @@ const Navbar = () => {
                     onClick={handleClose}
                   >
                     Register
-                  </MenuItem>,
+                  </MenuItem>
                 ]
               )}
             </Menu>

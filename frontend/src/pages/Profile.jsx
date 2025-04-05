@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Container,
   Box,
@@ -8,6 +8,7 @@ import {
   Paper,
   Tabs,
   Tab,
+  Alert,
 } from '@mui/material'
 import { useAuth } from '../context/AuthContext'
 
@@ -15,16 +16,28 @@ const Profile = () => {
   const { user, updateProfile, changePassword } = useAuth()
   const [activeTab, setActiveTab] = useState(0)
   const [profileData, setProfileData] = useState({
-    firstName: user?.profile?.firstName || '',
-    lastName: user?.profile?.lastName || '',
-    phone: user?.profile?.phone || '',
-    address: user?.profile?.address || '',
+    firstName: '',
+    lastName: '',
+    phone: '',
+    address: '',
   })
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
   })
+  const [message, setMessage] = useState({ type: '', text: '' })
+
+  useEffect(() => {
+    if (user?.profile) {
+      setProfileData({
+        firstName: user.profile.firstName || '',
+        lastName: user.profile.lastName || '',
+        phone: user.profile.phone || '',
+        address: user.profile.address || '',
+      })
+    }
+  }, [user])
 
   const handleProfileChange = (e) => {
     setProfileData({
@@ -42,37 +55,59 @@ const Profile = () => {
 
   const handleProfileSubmit = async (e) => {
     e.preventDefault()
-    await updateProfile(profileData)
+    try {
+      const success = await updateProfile(profileData)
+      if (success) {
+        setMessage({ type: 'success', text: 'Profile updated successfully' })
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Failed to update profile' })
+    }
   }
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault()
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert('New passwords do not match')
+      setMessage({ type: 'error', text: 'New passwords do not match' })
       return
     }
-    await changePassword(passwordData.currentPassword, passwordData.newPassword)
-    setPasswordData({
-      currentPassword: '',
-      newPassword: '',
-      confirmPassword: '',
-    })
+    try {
+      const success = await changePassword(passwordData.currentPassword, passwordData.newPassword)
+      if (success) {
+        setMessage({ type: 'success', text: 'Password changed successfully' })
+        setPasswordData({
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: '',
+        })
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Failed to change password' })
+    }
   }
 
   return (
-    <Container maxWidth="md">
-      <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
+    <Container maxWidth="md" sx={{ py: 4 }}>
+      <Paper elevation={3} sx={{ p: 4 }}>
         <Typography variant="h4" gutterBottom>
           Profile Settings
         </Typography>
-        <Tabs
-          value={activeTab}
-          onChange={(e, newValue) => setActiveTab(newValue)}
-          sx={{ mb: 4 }}
-        >
-          <Tab label="Profile Information" />
-          <Tab label="Change Password" />
-        </Tabs>
+
+        {message.text && (
+          <Alert severity={message.type} sx={{ mb: 2 }}>
+            {message.text}
+          </Alert>
+        )}
+
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
+          <Tabs
+            value={activeTab}
+            onChange={(e, newValue) => setActiveTab(newValue)}
+          >
+            <Tab label="Profile Information" />
+            <Tab label="Change Password" />
+          </Tabs>
+        </Box>
 
         {activeTab === 0 && (
           <Box component="form" onSubmit={handleProfileSubmit}>

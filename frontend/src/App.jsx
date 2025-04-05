@@ -18,6 +18,7 @@ import AdminRoute from './components/AdminRoute'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { Box } from '@mui/material'
+import Profile from './pages/Profile'
 
 function App() {
   return (
@@ -37,6 +38,14 @@ function App() {
                   <Route path="/cart" element={<Cart />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
+                  <Route
+                    path="/profile"
+                    element={
+                      <PrivateRoute>
+                        <Profile />
+                      </PrivateRoute>
+                    }
+                  />
                   <Route
                     path="/admin"
                     element={
