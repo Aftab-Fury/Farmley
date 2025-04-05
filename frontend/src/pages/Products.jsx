@@ -14,9 +14,12 @@ import {
   CardActions,
   Divider,
   Icon,
+  Snackbar,
+  Alert,
 } from '@mui/material'
 import { useState } from 'react'
 import { styled } from '@mui/material/styles'
+import { useCart } from '../context/CartContext'
 
 const CategoryTab = styled(Tab)(({ theme }) => ({
   textTransform: 'none',
@@ -41,6 +44,8 @@ const ProductCard = styled(Card)(({ theme }) => ({
 
 const Products = () => {
   const [category, setCategory] = useState('all')
+  const [snackbar, setSnackbar] = useState({ open: false, message: '' })
+  const { addToCart } = useCart()
 
   const categories = [
     { value: 'all', label: 'All Products' },
@@ -101,6 +106,18 @@ const Products = () => {
 
   const handleCategoryChange = (event, newValue) => {
     setCategory(newValue)
+  }
+
+  const handleAddToCart = (product) => {
+    addToCart(product)
+    setSnackbar({
+      open: true,
+      message: `${product.name} added to cart!`,
+    })
+  }
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false })
   }
 
   return (
@@ -190,6 +207,7 @@ const Products = () => {
                   variant="contained"
                   startIcon={<Icon>shopping_cart</Icon>}
                   disabled={product.comingSoon}
+                  onClick={() => handleAddToCart(product)}
                 >
                   Add to Cart
                 </Button>
@@ -198,6 +216,17 @@ const Products = () => {
           </Grid>
         ))}
       </Grid>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Container>
   )
 }

@@ -1,183 +1,162 @@
-import { Container, Typography, Box, Grid, Paper, TextField, Button } from '@mui/material'
-import { styled } from '@mui/material/styles'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
-import PhoneIcon from '@mui/icons-material/Phone'
-import EmailIcon from '@mui/icons-material/Email'
-import AccessTimeIcon from '@mui/icons-material/AccessTime'
-
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(4),
-  marginBottom: theme.spacing(4),
-  backgroundColor: '#f9f9f9',
-}))
-
-const ContactInfo = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  marginBottom: theme.spacing(2),
-}))
+import {
+  Container,
+  Typography,
+  Box,
+  Grid,
+  TextField,
+  Button,
+  Card,
+  CardContent,
+  Icon,
+} from '@mui/material'
 
 const Contact = () => {
-  const handleSubmit = (event) => {
-    event.preventDefault()
+  const handleSubmit = (e) => {
+    e.preventDefault()
     // Handle form submission here
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <StyledPaper elevation={3}>
-        <Typography variant="h3" component="h1" gutterBottom align="center">
+    <Container maxWidth="lg" sx={{ py: 8 }}>
+      <Box sx={{ mb: 8, textAlign: 'center' }}>
+        <Typography variant="h2" gutterBottom>
           Contact Us
         </Typography>
-        <Typography variant="h6" color="text.secondary" paragraph align="center">
-          Get in touch with us
+        <Typography variant="subtitle1" color="text.secondary">
+          Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
         </Typography>
-      </StyledPaper>
+      </Box>
 
-      <Grid container spacing={4}>
+      <Grid container spacing={6}>
         <Grid item xs={12} md={6}>
-          <StyledPaper>
-            <Typography variant="h4" gutterBottom>
+          <Card>
+            <CardContent>
+              <Typography variant="h5" gutterBottom>
+                Get in Touch
+              </Typography>
+              <form onSubmit={handleSubmit}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      label="First Name"
+                      variant="outlined"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      label="Last Name"
+                      variant="outlined"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      label="Email"
+                      type="email"
+                      variant="outlined"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      label="Subject"
+                      variant="outlined"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      label="Message"
+                      multiline
+                      rows={4}
+                      variant="outlined"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      size="large"
+                      fullWidth
+                    >
+                      Send Message
+                    </Button>
+                  </Grid>
+                </Grid>
+              </form>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <Box sx={{ mb: 4 }}>
+            <Typography variant="h5" gutterBottom>
               Contact Information
             </Typography>
-            <ContactInfo>
-              <LocationOnIcon sx={{ mr: 2, color: '#4CAF50' }} />
-              <Box>
-                <Typography variant="h6">Address</Typography>
-                <Typography>
-                  123 Farm Street, Agricultural Zone
-                  <br />
-                  City, State 12345
-                </Typography>
-              </Box>
-            </ContactInfo>
-            <ContactInfo>
-              <PhoneIcon sx={{ mr: 2, color: '#4CAF50' }} />
-              <Box>
-                <Typography variant="h6">Phone</Typography>
-                <Typography>+1 (123) 456-7890</Typography>
-              </Box>
-            </ContactInfo>
-            <ContactInfo>
-              <EmailIcon sx={{ mr: 2, color: '#4CAF50' }} />
-              <Box>
-                <Typography variant="h6">Email</Typography>
-                <Typography>info@farmlyf.com</Typography>
-              </Box>
-            </ContactInfo>
-            <ContactInfo>
-              <AccessTimeIcon sx={{ mr: 2, color: '#4CAF50' }} />
-              <Box>
-                <Typography variant="h6">Working Hours</Typography>
-                <Typography>
-                  Monday - Friday: 9:00 AM - 6:00 PM
-                  <br />
-                  Saturday: 9:00 AM - 2:00 PM
-                  <br />
-                  Sunday: Closed
-                </Typography>
-              </Box>
-            </ContactInfo>
-          </StyledPaper>
-        </Grid>
-
-        <Grid item xs={12} md={6}>
-          <StyledPaper>
-            <Typography variant="h4" gutterBottom>
-              Send us a Message
+            <Typography variant="body1" color="text.secondary" paragraph>
+              We're here to help with any questions you may have about our products or services.
             </Typography>
-            <Box component="form" onSubmit={handleSubmit} noValidate>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="firstName"
-                    label="First Name"
-                    name="firstName"
-                    autoComplete="given-name"
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="lastName"
-                    label="Last Name"
-                    name="lastName"
-                    autoComplete="family-name"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="subject"
-                    label="Subject"
-                    name="subject"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="message"
-                    label="Message"
-                    name="message"
-                    multiline
-                    rows={4}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{
-                      mt: 2,
-                      mb: 2,
-                      backgroundColor: '#4CAF50',
-                      '&:hover': {
-                        backgroundColor: '#45a049',
-                      },
-                    }}
-                  >
-                    Send Message
-                  </Button>
-                </Grid>
-              </Grid>
-            </Box>
-          </StyledPaper>
+          </Box>
+
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <Icon sx={{ mr: 2, color: 'primary.main' }}>location_on</Icon>
+                <Box>
+                  <Typography variant="subtitle1">Address</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    123 Farmley Street, City, Country
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
+            <Grid item xs={12}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <Icon sx={{ mr: 2, color: 'primary.main' }}>phone</Icon>
+                <Box>
+                  <Typography variant="subtitle1">Phone</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    +91 1234567890
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
+            <Grid item xs={12}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <Icon sx={{ mr: 2, color: 'primary.main' }}>email</Icon>
+                <Box>
+                  <Typography variant="subtitle1">Email</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    info@farmley.com
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
+            <Grid item xs={12}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <Icon sx={{ mr: 2, color: 'primary.main' }}>schedule</Icon>
+                <Box>
+                  <Typography variant="subtitle1">Business Hours</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Monday - Friday: 9:00 AM - 6:00 PM
+                    <br />
+                    Saturday: 10:00 AM - 4:00 PM
+                    <br />
+                    Sunday: Closed
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
-
-      <StyledPaper>
-        <Typography variant="h4" gutterBottom align="center">
-          Visit Our Office
-        </Typography>
-        <Box
-          sx={{
-            height: 400,
-            width: '100%',
-            backgroundColor: '#e0e0e0',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Typography>Map will be displayed here</Typography>
-        </Box>
-      </StyledPaper>
     </Container>
   )
 }

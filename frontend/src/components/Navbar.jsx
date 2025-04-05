@@ -10,14 +10,17 @@ import {
   InputBase,
   Badge,
   Container,
+  Avatar,
 } from '@mui/material'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { useCart } from '../context/CartContext'
 import MenuIcon from '@mui/icons-material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import { styled, alpha } from '@mui/material/styles'
 import { useState } from 'react'
+import { Icon } from '@mui/material'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -60,6 +63,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth()
+  const { cart } = useCart()
   const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = useState(null)
 
@@ -155,35 +159,75 @@ const Navbar = () => {
               aria-label="show cart items"
               color="inherit"
               sx={{ color: 'text.primary' }}
+              component={RouterLink}
+              to="/cart"
             >
-              <Badge badgeContent={0} color="primary">
+              <Badge badgeContent={cart.length} color="primary">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
 
             {isAuthenticated ? (
               <>
-                <Button
+                <IconButton
+                  onClick={handleMenu}
                   color="inherit"
-                  component={RouterLink}
-                  to="/profile"
-                  sx={{ 
-                    ml: 2,
-                    color: 'text.primary',
-                    '&:hover': {
-                      color: 'primary.main',
+                >
+                  <Avatar sx={{ width: 32, height: 32 }}>
+                    {user?.name?.[0]?.toUpperCase() || 'U'}
+                  </Avatar>
+                </IconButton>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                  sx={{
+                    '& .MuiPaper-root': {
+                      borderRadius: 2,
+                      mt: 1.5,
                     },
                   }}
                 >
-                  {user?.username}
-                </Button>
-                <Button
-                  variant="outlined"
-                  onClick={handleLogout}
-                  sx={{ ml: 1 }}
-                >
-                  Logout
-                </Button>
+                  {menuItems.map((item) => (
+                    <MenuItem
+                      key={item.path}
+                      component={RouterLink}
+                      to={item.path}
+                      onClick={handleClose}
+                    >
+                      {item.label}
+                    </MenuItem>
+                  ))}
+                  <MenuItem
+                    component={RouterLink}
+                    to="/cart"
+                    onClick={handleClose}
+                  >
+                    Cart
+                  </MenuItem>
+                  <MenuItem
+                    component={RouterLink}
+                    to="/profile"
+                    onClick={handleClose}
+                  >
+                    Profile
+                  </MenuItem>
+                  {user?.isSuperuser && (
+                    <MenuItem
+                      component={RouterLink}
+                      to="/admin"
+                      onClick={handleClose}
+                    >
+                      Admin Panel
+                    </MenuItem>
+                  )}
+                  <MenuItem
+                    key="logout"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </MenuItem>
+                </Menu>
               </>
             ) : (
               <>
