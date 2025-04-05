@@ -30,12 +30,12 @@ mongoose
 // Create initial superuser if not exists
 const createSuperuser = async () => {
   const User = mongoose.model('User')
-  const superuser = await User.findOne({ email: 'admin@farmlyf.com' })
+  const superuser = await User.findOne({ email: 'admin@farmley.com' })
   
   if (!superuser) {
     const newSuperuser = new User({
       username: 'admin',
-      email: 'admin@farmlyf.com',
+      email: 'admin@farmley.com',
       password: 'admin123', // Change this in production
       isSuperuser: true,
     })
