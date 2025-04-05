@@ -49,17 +49,35 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body
+    
+    if (!email || !password) {
+      return res.status(400).json({ 
+        message: 'Please provide both email and password',
+        details: !email ? 'Email is required' : 'Password is required'
+      })
+    }
+
+    console.log('Login attempt for email:', email)
 
     // Check if user exists
     const user = await User.findOne({ email })
     if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials' })
+      console.log('User not found for email:', email)
+      return res.status(400).json({ 
+        message: 'Invalid credentials',
+        details: 'No user found with this email address'
+      })
     }
+    console.log('User found:', { email: user.email, username: user.username })
 
     // Check password
     const isMatch = await user.comparePassword(password)
+    console.log('Password match:', isMatch)
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' })
+      return res.status(400).json({ 
+        message: 'Invalid credentials',
+        details: 'Incorrect password'
+      })
     }
 
     // Create token
@@ -77,8 +95,11 @@ router.post('/login', async (req, res) => {
       },
     })
   } catch (error) {
-    console.error(error)
-    res.status(500).json({ message: 'Server error' })
+    console.error('Login error:', error)
+    res.status(500).json({ 
+      message: 'Server error',
+      details: error.message 
+    })
   }
 })
 
